@@ -1521,7 +1521,7 @@ namespace agg
         };
         struct pixel_type
         {
-            value_type c[num_components];
+            value_type c[];
 
             void set(value_type r, value_type g, value_type b, value_type a)
             {
@@ -1733,12 +1733,10 @@ namespace agg
                                    unsigned len, 
                                    const color_type& c)
         {
-            pixel_type v;
-            v.set(c);
             pixel_type* p = pix_value_ptr(x, y, len);
             do
             {
-                *p = v;
+                p->set(c);
                 p = p->next();
             }
             while (--len);
@@ -1750,11 +1748,9 @@ namespace agg
                                    unsigned len, 
                                    const color_type& c)
         {
-            pixel_type v;
-            v.set(c);
             do
             {
-                *pix_value_ptr(x, y++, 1) = v;
+                pix_value_ptr(x, y++, 1)->set(c);
             }
             while (--len);
         }
@@ -1770,11 +1766,9 @@ namespace agg
                 pixel_type* p = pix_value_ptr(x, y, len);
                 if (c.is_opaque() && cover == cover_mask)
                 {
-                    pixel_type v;
-                    v.set(c);
                     do
                     {
-                        *p = v;
+                        p->set(c);
                         p = p->next();
                     }
                     while (--len);
@@ -1814,11 +1808,9 @@ namespace agg
             {
                 if (c.is_opaque() && cover == cover_mask)
                 {
-                    pixel_type v;
-                    v.set(c);
                     do
                     {
-                        *pix_value_ptr(x, y++, 1) = v;
+                        pix_value_ptr(x, y++, 1)->set(c);
                     }
                     while (--len);
                 }
